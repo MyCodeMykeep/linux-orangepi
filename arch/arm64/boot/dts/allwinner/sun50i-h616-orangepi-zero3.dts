@@ -100,6 +100,11 @@
 		reset-gpios = <&pio 6 18 GPIO_ACTIVE_LOW>; /* PG18 */
 		post-power-on-delay-ms = <200>;
 	};
+
+	backlight: backlight {
+		compatible = "gpio-backlight";
+		gpios = <&pio 2 6 GPIO_ACTIVE_HIGH>; //pc6
+	};
 };
 
 &de {
@@ -334,7 +339,7 @@
 };
 
 &spi1 {
-	status = "disabled";
+	status = "okay";
 	#address-cells = <1>;
 	#size-cells = <0>;
 	pinctrl-names = "default";
@@ -345,6 +350,18 @@
 		status = "disabled";
 		reg = <1>;
 		spi-max-frequency = <1000000>;
+	};
+	display@0{
+		compatible = "sitronix,st7735r";
+		status = "okay";
+		reg = <1>;
+		spi-max-frequency = <32000000>;
+		dc = <&pio 2 5 GPIO_ACTIVE_HIGH>;  //pc5
+		reset = <&pio 2 8 GPIO_ACTIVE_HIGH>; //pc8
+		rotation = <270>;
+		buswidth =<8>;
+		backlight = <&backlight>;
+		debug = <0>;
 	};
 };
 
